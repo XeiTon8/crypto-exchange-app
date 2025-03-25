@@ -1,0 +1,6 @@
+<div *ngIf="timeData | async as time" class="time-wrapper">
+    <span
+    matTooltip="Server time: {{time.serverTime | date: 'medium':'UTC'}}"
+    matTooltipPosition="right"
+    >Current time: {{time.localTime | date: 'medium'}}</span>
+  </div>

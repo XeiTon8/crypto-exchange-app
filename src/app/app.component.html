@@ -1,0 +1,89 @@
+<main class="main">
+  <div class="content__container">
+  <div>
+    <h1 style="margin-bottom: 15px;">Crypto-Exchange Data Aggregator</h1>
+
+    <app-time-display  [timeData]="timeData$"/>
+
+    <span style="margin-bottom: 15px; display: block;">
+      Current exchange site: 
+      <span style="font-size: 1.5em;">{{selectedSite}}</span>
+    </span>
+
+    <div class="sites-wrapper">
+      <button
+      class="exchange-binance" 
+      [disabled]="isLoading()"
+      (click)="isLoading() ? null : selectSite(sites.BINANCE)">Binance</button>
+      <button
+      [disabled]="isLoading()"
+      class="exchange-bybit" 
+      (click)="isLoading() ? null : selectSite(sites.BYBIT)">Bybit</button>
+      <button
+      [disabled]="isLoading()"
+      class="exchange-okx" 
+      (click)="isLoading() ? null : selectSite(sites.OKX)">OKX</button>
+    </div>
+  </div>
+
+  <div>
+      <app-search-bar (search)="handleSearch($event)" /> 
+      <app-loading-bar [isLoading]="isLoading()" />
+
+      <div class="table-wrapper" [hidden]="isLoading()">
+      
+        <cdk-virtual-scroll-viewport itemSize="52" class="viewport" (scrolledIndexChange)="onScroll($event)">
+          <table mat-table [dataSource]="(filteredData$ | async) ?? []" class="mat-elevation-z8">
+
+          
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef matTooltip="Trading pairs" matTooltipPosition="right" matTooltipClass="custom-tooltip" > Symbol </th>
+              <td mat-cell *matCellDef="let element"> {{ element.symbol }} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef matTooltip="Latest price" matTooltipPosition="left" (click)="sortPrice()" > Price </th>
+              <td mat-cell *matCellDef="let element"> {{ element.price | number:'1.4-4' }} </td>
+            </ng-container>
+          
+          
+            <ng-container matColumnDef="volume">
+              <th mat-header-cell *matHeaderCellDef matTooltip="Volume for 24h" matTooltipPosition="left"  > Volume </th>
+              <td mat-cell *matCellDef="let element"> {{ element.volume }} </td>
+            </ng-container>
+          
+        
+            <ng-container matColumnDef="percentageChange">
+              <th mat-header-cell *matHeaderCellDef matTooltip="Price change in % (for 24h)" matTooltipPosition="left" > 24h Change (%) </th>
+              <td mat-cell *matCellDef="let element" 
+              [ngStyle]="{'color': element.change > 0 ? 'green' : 
+              (element.change < 0 ? 'red' : 'black')}"> {{ element.change.toFixed(3) }} </td>
+            </ng-container>
+          
+          
+            <ng-container matColumnDef="highestPrice">
+              <th mat-header-cell *matHeaderCellDef matTooltip="Last highest price" matTooltipPosition="left"  > Highest Price (24h) </th>
+              <td mat-cell *matCellDef="let element"> {{ element.high | number:'1.4-4' }} </td>
+            </ng-container>
+          
+          
+            <ng-container matColumnDef="lowestPrice">
+              <th mat-header-cell *matHeaderCellDef matTooltip="Last lowest price" matTooltipPosition="left"  > Lowest Price (24h) </th>
+              <td mat-cell *matCellDef="let element"> {{ element.low | number:'1.4-4' }} </td>
+            </ng-container>
+          
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
+            
+          
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </cdk-virtual-scroll-viewport>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+
+<router-outlet />

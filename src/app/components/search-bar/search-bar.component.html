@@ -1,0 +1,8 @@
+<div class="search-wrapper">
+    <input 
+        class="search-input"
+        [(ngModel)]="searchValue" 
+        (input)="search.emit(searchValue)" 
+        placeholder="Type to search..."
+    >
+</div>

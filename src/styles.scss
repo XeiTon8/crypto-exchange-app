@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+    }
+    
+    html, body {
+    height: 100%;
+    min-width: 320px;
+    }
+    
+    body {
+    line-height: 1;
+    font-size: 16px;
+    overflow-x: hidden;
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    }
+    
+    input {
+        padding: 10px;
+        outline: none;
+        border-radius: 10px;
+        box-shadow: 0 0 4px 4px rgba(0, 0, 0, .08);
+        transition: all 0.3s ease-in-out;
+    }
+    
+    main {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+    
+    
+    
+    [class*="__container"]
+    {
+        max-width: 1430px;
+        margin: 0 auto;
+        padding: 15px;
+        width: 100%;
+    }
+

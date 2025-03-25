@@ -1,0 +1,45 @@
+.viewport {
+    height: 500px; 
+    width: 100%;
+    border: 1px solid #ccc;
+  }
+
+  ::ng-deep .custom-tooltip {
+    left: -150px;
+}
+
+// Wrappers
+.sites-wrapper {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 15px;
+}
+
+.exchange-binance {
+background-color: #191a1f;
+color: #d2ae2d;
+}
+
+.exchange-bybit {
+  background-color: #17181d;
+  color: #fecc38;
+}
+
+.exchange-okx {
+  background-color: #000;
+  color: #fff
+}
+
+button {
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:disabled {
+  background-color: lightgray; 
+  color: black;
+  pointer-events: none;
+}
