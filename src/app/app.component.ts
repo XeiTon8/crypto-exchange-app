@@ -1,7 +1,7 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { catchError, map, Observable, of, finalize, tap, BehaviorSubject } from 'rxjs';
+import { catchError, map, Observable, of, finalize, tap, BehaviorSubject, Subject, takeUntil } from 'rxjs';
 
 // API
 import { RouterOutlet } from '@angular/router';
@@ -19,8 +19,6 @@ import { TimeDisplayComponent } from "./components/time-display/time-display.com
 
 // Utils
 import { getServerTime } from './utils/api.utils';
-
-// Components
 import { SearchBarComponent } from "./components/search-bar/search-bar.component";
 import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
 
@@ -37,8 +35,10 @@ import { LoadingBarComponent } from './components/loading-bar/loading-bar.compon
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'exchange-app';
+
+  private destroy$ = new Subject<void>();
 
   constructor(private http: HttpClient) {}
 
@@ -127,6 +127,7 @@ export class AppComponent implements OnInit {
     this.isLoading.set(true);
   
     this.http.get<any[]>(this.siteUrl).pipe(
+        takeUntil(this.destroy$),
           map((data: any) => this.transformData(data)),
           tap(newData => {
             if (url === this.siteUrl) {
@@ -216,6 +217,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData(this.siteUrl)
-    this.timeData$ = getServerTime(this.http, this.selectedSite).pipe(tap(data => console.log(data)))
+    this.timeData$ = getServerTime(this.http, this.selectedSite).pipe(takeUntil(this.destroy$))
+  }
+
+  ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
   }
 }
