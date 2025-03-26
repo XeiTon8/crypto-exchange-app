@@ -19,6 +19,8 @@ import { TimeDisplayComponent } from "./components/time-display/time-display.com
 
 // Utils
 import { getServerTime } from './utils/api.utils';
+
+// Components
 import { SearchBarComponent } from "./components/search-bar/search-bar.component";
 import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
 
@@ -214,7 +216,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData(this.siteUrl)
-    this.filteredData$ = this.instruments$.asObservable()
     this.timeData$ = getServerTime(this.http, this.selectedSite).pipe(tap(data => console.log(data)))
   }
 }
